@@ -58,4 +58,32 @@ public class UsersStepDefs {
         //compare with expectedStatus
         Assert.assertEquals(expectedStatus,actualStatus);
     }
+    @Then("the user changes current user status {string} to {string}")
+    public void the_user_changes_current_user_status_to(String inactive, String active) {
+        //after testing, we can not leave our QA environment settings as it is because we made some changes.
+        // so we need to change it to DEFAULT status for our next tests to execute properly
+        // so this step for switching user status to inactive again, after we run our test case
+        BrowserUtil.waitFor(4);
+        BrowserUtil.selectByVisibleText(usersPage.userStatusDropdown, inactive);
+
+        //Find user that we deactivated
+        usersPage.searchField.sendKeys(email);
+        BrowserUtil.waitFor(3);
+
+
+        // we will click on edit user button based on the email that we updated
+        BrowserUtil.waitFor(3);
+        usersPage.editUser(email).click();
+
+        // we update user from inactive to active
+        BrowserUtil.waitFor(3);
+        BrowserUtil.selectByVisibleText(usersPage.statusDropdown, active);
+
+        // save changes
+        BrowserUtil.waitFor(3);
+        usersPage.saveChanges.click();
+        System.out.println(email + " is activated.");
+    }
+
+
 }

@@ -30,6 +30,8 @@ public class UsersPage extends BasePage {
     @FindBy(xpath = "//select[@name='tbl_users_length']\n")
     private WebElement NumberOfUserDropdown;
 
+    @FindBy(xpath = " //input[@type='search']")
+    public WebElement searchField;
 
     public WebElement editUser(String email) {
         String xpath = "//td[.='"+ email+ "']/..//a";

@@ -8,3 +8,4 @@ Feature: User management
     And the user clicks save changes button
     Then "The user updated." message should appear
     And the users should see same status for related user in database
+    And the user changes current user status "INACTIVE" to "ACTIVE"
