@@ -9,20 +9,20 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 
-public class DashboardStepDefs
-{
+public class DashboardStepDefs {
     String actualUserNumbers;
     String actualBookNumbers;
     String actualBorrowedBookNumbers;
-    LoginPage loginPage=new LoginPage();
-    DashBoardPage dashBoardPage=new DashBoardPage();
+    LoginPage loginPage = new LoginPage();
+    DashBoardPage dashBoardPage = new DashBoardPage();
 
 
     @Given("the user logged in as {string}")
     public void the_user_logged_in_as(String user) {
         loginPage.login(user);
-         BrowserUtil.waitFor(4);
+        BrowserUtil.waitFor(4);
     }
+
     @When("user gets all information from modules")
     public void user_gets_all_information_from_modules() {
 
@@ -41,39 +41,38 @@ public class DashboardStepDefs
         //This scenario Database result is expected.
 
         //Connect the same database (library2)
+        DB_Util.createConnection();
+
         //DB_Util.createConnection(); connection will be created by @db hooks
-        //run query for each of the result (3 different queries)
-
-        //BOOKS
         DB_Util.runQuery("select count(*) from books");
+        String expectedBooksNumber = DB_Util.getFirstRowFirstColumn();
+        System.out.println("expectedBooks = " + expectedBooksNumber);
 
-        String expectedBookNumbers = DB_Util.getFirstRowFirstColumn();
-        System.out.println("expectedBookNumbers = " + expectedBookNumbers);
         //compare results with UI results(Actual results)
-        Assert.assertEquals(actualBookNumbers,expectedBookNumbers);
+        Assert.assertEquals(actualBookNumbers, expectedBooksNumber);
+
 
         //USERS
         DB_Util.runQuery("select count(*) from users");
         String expectedUserNumbers = DB_Util.getFirstRowFirstColumn();
         System.out.println("expectedUserNumbers = " + expectedUserNumbers);
+
         //compare results
-        Assert.assertEquals(actualUserNumbers,expectedUserNumbers);
+        Assert.assertEquals(actualUserNumbers, expectedUserNumbers);
+
 
         //BORROWED BOOKS
-        String query = "select count(*) from book_borrow\n" +
-                "where is_returned = 0";
+        DB_Util.runQuery("select count(*) from book_borrow where is_returned = 0");
+        String expectedBorrowedBookNumber = DB_Util.getFirstRowFirstColumn();
+        System.out.println("expectedBorrowedBookNumber = " + expectedBorrowedBookNumber);
 
-        DB_Util.runQuery(query);
+        // compare numbers
+        Assert.assertEquals(actualBorrowedBookNumbers, expectedBorrowedBookNumber);
 
-        String expectedBorrowedBookNumbers= DB_Util.getFirstRowFirstColumn();
-        System.out.println("expectedBorrowedBookNumbers = " + expectedBorrowedBookNumbers);
 
-        Assert.assertEquals(actualBorrowedBookNumbers,expectedBorrowedBookNumbers);
+        // close connection
+        DB_Util.destroy();
 
-        //close connection
-        //DB_Util.destroy(); connection will be closed  by @db hooks
 
     }
-
-
 }
