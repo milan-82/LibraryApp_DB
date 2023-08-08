@@ -11,6 +11,6 @@ select name, isbn, year, author, description from books
 where name = 'Agile Testing';
 
 select full_name from users
-where email = 'librarian10@library';
+where email = 'librarian9@library';
 
 
