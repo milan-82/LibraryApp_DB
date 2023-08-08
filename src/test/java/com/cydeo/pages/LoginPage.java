@@ -22,6 +22,9 @@ public class LoginPage {
     @FindBy(tagName = "button")
     public WebElement loginButton;
 
+    @FindBy(xpath = "//a[@id='navbarDropdown']/span")
+    public WebElement accountHolderName;
+
 
 
     public void login(String userType){
