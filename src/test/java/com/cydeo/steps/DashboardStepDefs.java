@@ -41,8 +41,6 @@ public class DashboardStepDefs {
         //This scenario Database result is expected.
 
         //Connect the same database (library2)
-        DB_Util.createConnection();
-
         //DB_Util.createConnection(); connection will be created by @db hooks
         DB_Util.runQuery("select count(*) from books");
         String expectedBooksNumber = DB_Util.getFirstRowFirstColumn();
@@ -71,7 +69,7 @@ public class DashboardStepDefs {
 
 
         // close connection
-        DB_Util.destroy();
+       // DB_Util.destroy(); connection will be closed with @db hooks
 
 
     }
